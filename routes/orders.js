@@ -2,6 +2,7 @@ var express = require('express');
 var redis = require('redis');
 var aws = require('aws-sdk');
 var db = new aws.DynamoDB();
+var config = require('../config/config.' + [process.env.NODE_ENV || 'development']);
 
 var router = express.Router();
 
@@ -9,7 +10,10 @@ router.get('/populate', function(req, res) {
   var id = req.body;
   content = getOrder(id);
 
-  var client = redis.createClient();
+  var client = (config.cache.useLocal)
+    ? redis.createClient()
+    : redis.createClient(config.port, config.host, { no_ready_check: true});
+
   client.hset('orders', id, content);
   client.publish('new_order', content);
 
@@ -19,7 +23,10 @@ router.get('/populate', function(req, res) {
 router.post('/deliverOrder', function(req, res) {
   var id = req.body.order;
 
-  var client = redis.createClient(config.port, config.host, { no_ready_check: true});
+  var client = (config.cache.useLocal)
+    ? redis.createClient()
+    : redis.createClient(config.port, config.host, { no_ready_check: true});
+
   client.hget('orders', id, function(err, order) {
     client.hdel('orders', id.toString());
     client.publish('del_order', order);
@@ -31,7 +38,7 @@ router.post('/deliverOrder', function(req, res) {
 function getOrder(id) {
   var params = {
     AttributesToGet: [ "Order" ],
-    TableName : 'S3Orders',
+    TableName : config.db.tableName,
     Key : { "OrderID" : { "S" : id } }
   };
 
