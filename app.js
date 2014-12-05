@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var redis = require('redis');
-var config = require('../config/config.' + [process.env.NODE_ENV || 'development']);
+var config = require('./config/config.' + [process.env.NODE_ENV || 'development']);
 
 var routes = require('./routes/index');
 var orders = require('./routes/orders');
