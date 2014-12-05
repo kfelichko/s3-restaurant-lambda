@@ -12,7 +12,7 @@ router.get('/populate', function(req, res) {
 
   var client = (config.cache.useLocal)
     ? redis.createClient()
-    : redis.createClient(config.port, config.host, { no_ready_check: true});
+    : redis.createClient(config.cache.port, config.cache.host, { no_ready_check: true});
 
   client.hset('orders', id, content);
   client.publish('new_order', content);
@@ -25,7 +25,7 @@ router.post('/deliverOrder', function(req, res) {
 
   var client = (config.cache.useLocal)
     ? redis.createClient()
-    : redis.createClient(config.port, config.host, { no_ready_check: true});
+    : redis.createClient(config.cache.port, config.cache.host, { no_ready_check: true});
 
   client.hget('orders', id, function(err, order) {
     client.hdel('orders', id.toString());

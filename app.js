@@ -61,7 +61,7 @@ app.use(function(err, req, res, next) {
 
 var subscribe = (config.cache.useLocal)
   ? redis.createClient()
-  : redis.createClient(config.port, config.host, { no_ready_check: true});
+  : redis.createClient(config.cache.port, config.cache.host, { no_ready_check: true});
 
 subscribe.subscribe('new_order');
 subscribe.subscribe('del_order');
