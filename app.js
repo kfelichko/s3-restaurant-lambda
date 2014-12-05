@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var redis = require('redis');
+var config = require('../config/config.' + [process.env.NODE_ENV || 'development']);
 
 var routes = require('./routes/index');
 var orders = require('./routes/orders');
@@ -58,7 +59,10 @@ app.use(function(err, req, res, next) {
     });
 });
 
-var subscribe = redis.createClient();
+var subscribe = (config.cache.useLocal)
+  ? redis.createClient()
+  : redis.createClient(config.port, config.host, { no_ready_check: true});
+
 subscribe.subscribe('new_order');
 subscribe.subscribe('del_order');
 

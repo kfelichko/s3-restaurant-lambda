@@ -17,6 +17,5 @@
     "express.io" : "*",
     "redis" : "*",
     "hiredis" : "*",
-    "aws-sdk" : "~2.0.30"
   }
 }
