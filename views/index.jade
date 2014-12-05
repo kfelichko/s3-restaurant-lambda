@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  h1= title
+  p Pending orders are listed below:
+  br
+  #orderList
+    table
+      thead
+        th  Ready?
+        th  Contact
+        th  Location
+      tbody
+  #mapCanvas
+    div
+
+block scripts
+  script(src='/socket.io/socket.io.js')
+  script(src='http://maps.google.com/maps/api/js?sensor=true')
+  script(src='//cdnjs.cloudflare.com/ajax/libs/bootstrap-modal/2.2.5/js/bootstrap-modal.min.js')
+  script(src='//cdnjs.cloudflare.com/ajax/libs/bootstrap-modal/2.2.5/js/bootstrap-modalmanager.min.js')
+  script(src='/javascripts/gmaps.js')
+  script(src='/javascripts/main.js')

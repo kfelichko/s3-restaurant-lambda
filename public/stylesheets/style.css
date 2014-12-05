@@ -1,0 +1,93 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table thead th {
+  padding: 5px;
+  background-color: black;
+  color: white;
+  width: 40%;
+  text-align: left;
+}
+
+table thead th:first-child {
+  width: 20%;
+  text-align: center;
+}
+
+table tbody td {
+  padding: 5px;
+}
+
+table tbody td:first-child {
+  text-align: center;
+}
+
+table tbody tr:nth-child(even) {
+  background: #EEE
+}
+
+tr:nth-child(odd) {
+  background: #FFF
+}
+
+#orderList {
+  float: left;
+  width: 49%;
+}
+
+#mapCanvas {
+  height: 600px;
+  width: 50%;
+  float: right;
+}
+
+div .balloon {
+  height: 100px;
+}
+
+div .balloon label {
+  font-weight: bold;
+}
+
+#add-manual-order form {
+  color: #808080;
+  text-shadow: -1px 1px 0 #fff;
+  -moz-text-shadow: -1px 1px 0 #fff;
+  -webkit-text-shadow: -1px 1px 0 #fff;
+  margin-bottom: 0;
+}
+
+#add-manual-order form button {
+  width: 80px;
+  top: 213px;
+  position: absolute;
+}
+
+#add-manual-order form #cancel {
+  right: 110px;
+}
+
+#add-manual-order form #submit {
+  right: 18px;
+}
+
+#add-manual-order .modal-body {
+  height: 140px;
+  overflow: hidden;
+  padding-bottom: 0;
+}
+
+#add-manual-order .modal-footer {
+  height: 20px;
+}
