@@ -6,7 +6,7 @@ var config = require('../config/config.' + [process.env.NODE_ENV || 'development
 
 var router = express.Router();
 
-router.get('/populate', function(req, res) {
+router.post('/populate', function(req, res) {
   var id = req.body;
   content = getOrder(id);
 
