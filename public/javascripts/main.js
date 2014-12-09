@@ -9,7 +9,7 @@ $(document).ready(function() {
 
     var conn = io.connect();
     conn.on('new_order', function(order) {
-      displayOrder(order);
+       displayOrder(order);
     });
 
     conn.on('del_order', function(order) {
@@ -23,36 +23,33 @@ function displayOrder(orderJson) {
   addOrderToTable(order);
 }
 
-function addOrderToMap(order) {
-  var od = $.parseJSON(order.S);
+function addOrderToMap(od) {
   var content = '<div class="balloon">' +
-                '  <label>Order ID:</label> ' + order.id + '<BR>' +
+                '  <label>Order ID:</label> ' + od.id + '<BR>' +
                 '  <label>Contact:</label>' + od.customer.first_name + ' ' + od.customer.last_name  + '<BR>' +
                 '  <label>Address:</label>' + od.location + '<BR>' +
-                '  <button id="orderButton" rel="' + order.id + '">Deliver Order</button>' +
+                '  <button id="orderButton" rel="' + od.id + '">Deliver Order</button>' +
                 '</div>';
-  addMarker(order, content);
+  addMarker(od, content);
 };
 
-function addOrderToTable(order) {
-  var od = $.parseJSON(order.S);
-  var row = '<tr id="order' + order.id + '">' +
-            '  <td><a href="#" class="linkmarkasready" rel="' + order.id + '" title="Deliver Order">Ready for Delivery</a></td>' +
+function addOrderToTable(od) {
+  var row = '<tr id="order' + od.id + '">' +
+            '  <td><a href="#" class="linkmarkasready" rel="' + od.id + '" title="Deliver Order">Ready for Delivery</a></td>' +
             '  <td>' + od.customer.first_name + ' ' + od.customer.last_name +  '</td>' +
             '  <td>' + od.location + '</td>' +
             '</tr>';
   $('#orderList table tbody:last').append(row);
 }
 
-function removeOrder(orderJson) {
-  var order = $.parseJSON(orderJson);
-  removeOrderFromMap(order);
-  removeOrderFromTable(order);
+function removeOrder(orderID) {
+  removeOrderFromMap(orderID);
+  removeOrderFromTable(orderID);
 }
 
-function removeOrderFromMap(order) {
+function removeOrderFromMap(orderID) {
   $.each(markers, function(idx, marker) {
-    if (marker.details.toString() == order.id) {
+    if (marker.details.toString() == orderID) {
       marker.setMap(null);
       marker = null;
       return;
@@ -60,8 +57,8 @@ function removeOrderFromMap(order) {
   });
 }
 
-function removeOrderFromTable(order) {
-  $('#orderList table tbody #order' + order.id).remove();
+function removeOrderFromTable(orderID) {
+  $('#orderList table tbody #order' + orderID).remove();
 }
 
 function markOrderAsReady() {
@@ -78,12 +75,12 @@ function initializeMap() {
     div: '#mapCanvas',
     lat: 47.6097,
     lng: -122.3331,
-    zoom: 12
+    zoom: 10
   });
 }
 
-function addMarker(order, content) {
-  var od = $.parseJSON(order.S);
+function addMarker(od, content) {
+  //var od = $.parseJSON(order);
   GMaps.geocode({
     address: od.location,
     callback: function(results, status) {
@@ -93,7 +90,7 @@ function addMarker(order, content) {
         var marker = map.createMarker({
           lat: latlng.lat(),
           lng: latlng.lng(),
-          details: order.id,
+          details: od.id,
           infoWindow : {
             content : content
           }

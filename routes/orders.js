@@ -25,7 +25,7 @@ router.post('/deliverOrder', function(req, res) {
 
   client.hget('orders', id, function(err, order) {
     client.hdel('orders', id.toString());
-    client.publish('del_order', order);
+    client.publish('del_order', id);
   });
 
   res.send(id);
