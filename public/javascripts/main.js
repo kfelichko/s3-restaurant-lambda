@@ -76,8 +76,8 @@ function addManualOrder() {
 function initializeMap() {
   map = new GMaps({
     div: '#mapCanvas',
-    lat: 39.4139,
-    lng: -77.4111,
+    lat: 47.6097,
+    lng: -122.3331,
     zoom: 12
   });
 }

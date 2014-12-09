@@ -9,8 +9,8 @@ var db = new aws.DynamoDB();
 var router = express.Router();
 
 router.post('/populate', function(req, res) {
-  var id = req.body.order;
-  getOrder(id, function(result) {
+  var order = req.body.order;
+  getOrder(order, function(result) {
      res.setHeader('Content-Type', 'application/json');
      res.end(JSON.stringify(result));
   });
@@ -31,7 +31,17 @@ router.post('/deliverOrder', function(req, res) {
   res.send(id);
 });
 
-function getOrder(id, callback) {
+function getOrder(content, callback) {
+  var client = (config.cache.useLocal)
+    ? redis.createClient()
+    : redis.createClient(config.cache.port, config.cache.host, { no_ready_check: true});
+
+  client.hset('orders', content.id, content, redis.print);
+  client.publish('new_order', content, redis.print)
+
+  callback(content);
+
+  /*
   var params = {
     AttributesToGet: [ "Order" ],
     TableName : config.db.tableName,
@@ -57,6 +67,7 @@ function getOrder(id, callback) {
       callback(content);
     }
   });
+  */
 }
 
 
