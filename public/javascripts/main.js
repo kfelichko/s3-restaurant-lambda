@@ -24,20 +24,22 @@ function displayOrder(orderJson) {
 }
 
 function addOrderToMap(order) {
+  var od = $.parseJSON(order.S);
   var content = '<div class="balloon">' +
                 '  <label>Order ID:</label> ' + order.id + '<BR>' +
-                '  <label>Contact:</label>' + order.contact + '<BR>' +
-                '  <label>Address:</label>' + order.location + '<BR>' +
+                '  <label>Contact:</label>' + od.customer.first_name + ' ' + od.customer.last_name  + '<BR>' +
+                '  <label>Address:</label>' + od.location + '<BR>' +
                 '  <button id="orderButton" rel="' + order.id + '">Deliver Order</button>' +
                 '</div>';
   addMarker(order, content);
 };
 
 function addOrderToTable(order) {
+  var od = $.parseJSON(order.S);
   var row = '<tr id="order' + order.id + '">' +
             '  <td><a href="#" class="linkmarkasready" rel="' + order.id + '" title="Deliver Order">Ready for Delivery</a></td>' +
-            '  <td>' + order.contact + '</td>' +
-            '  <td>' + order.location + '</td>' +
+            '  <td>' + od.customer.first_name + ' ' + od.customer.last_name +  '</td>' +
+            '  <td>' + od.location + '</td>' +
             '</tr>';
   $('#orderList table tbody:last').append(row);
 }
@@ -81,8 +83,9 @@ function initializeMap() {
 }
 
 function addMarker(order, content) {
+  var od = $.parseJSON(order.S);
   GMaps.geocode({
-    address: order.location,
+    address: od.location,
     callback: function(results, status) {
       if (status == 'OK') {
         var latlng = results[0].geometry.location;
